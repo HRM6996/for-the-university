@@ -11,8 +11,6 @@ class Bad_apple
     {
         int width = 230;
         int height = 70;
-        Console.SetWindowSize(width, height);
-        Console.SetBufferSize(width, height);
         Console.WindowHeight = height;
         Console.WindowWidth = width;
         Console.ForegroundColor = ConsoleColor.Yellow;
