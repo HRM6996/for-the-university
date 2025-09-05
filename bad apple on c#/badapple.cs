@@ -44,7 +44,7 @@ class Bad_apple
                 Console.ForegroundColor = ConsoleColor.White;
                 break;
         }
-        using (var audioFile = new AudioFileReader(@"E:\c#\bad apple\bad\Touhou — Bad Apple .mp3"))
+        using (var audioFile = new AudioFileReader(@"Директория\Touhou — Bad Apple .mp3"))
         using (var outputDevice = new WaveOutEvent())
 
         {
@@ -52,7 +52,7 @@ class Bad_apple
             outputDevice.Play();
 
 
-            string folder = @"E:\c#\bad apple\bad ASCII";
+            string folder = @"Директория ";
 
             string[] frames = Directory.GetFiles(folder, "*.txt");
 
