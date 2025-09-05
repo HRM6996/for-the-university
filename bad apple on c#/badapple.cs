@@ -58,7 +58,7 @@ class Bad_apple
 
             frames = frames.OrderBy(f => f).ToArray();
 
-            int frame_Delay = 1000 / 34;
+            int frame_Delay = 830 / 28;
             foreach (string frame in frames)
             {
                 Console.SetCursorPosition(0, 0);
