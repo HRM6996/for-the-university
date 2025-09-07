@@ -1,0 +1,237 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Schema;
+using NAudio.Wave;
+
+namespace ConsoleApp8
+{
+    internal class Program
+    {
+
+        static void Main(string[] args)
+        {
+            //музыка
+            var audioFile = new AudioFileReader(@"E:\c#\ConsoleApp8\music.mp3");
+            var outputDevice = new WaveOutEvent();
+            outputDevice.Init(audioFile);
+            outputDevice.Play();
+
+            outputDevice.PlaybackStopped += (s, e) =>
+            {
+                audioFile.Position = 0;
+                outputDevice.Play();
+            };
+
+            // данные пользователя
+            int hp = 100, damage = 2, armor = 10, money = 0, mana = 10;
+            int rating = 100;
+            string[] magic_hero = new string[4];
+            //статистика
+            int money_stat = 0, damage_stat = 0, hp_stat = 0, hp_stat_magic = 0, hp_stat_fiz = 0;
+            // магазин
+            int armor_buy = 1, hp_buy = 1, damage_buy = 1;
+            string[] magic_cast = { "Фаерболл", "Удар молнии", "Щит", "Обездвиживание" };
+
+            //игра
+            while (true)
+            {
+                Console.WriteLine("\nДобро пожаловать в подземелье ");
+                Console.WriteLine("\n 1-бои \n 2-магазин \n 3-статистика \n 4-ваши заклинания");
+                int select = Convert.ToInt32(Console.ReadLine());
+
+                switch (select)
+                {
+                    case 1:
+                        bool enemy_fight = true;
+                        Console.Clear();
+                        Console.WriteLine("Добро пожаловать на поле битвы ");
+                        Random rnd = new Random();
+                        int hp_enemy = rnd.Next(1, 4), damage_enemy = rnd.Next(1, 4), armor_enemy = rnd.Next(10, 14);
+                        while (enemy_fight)
+                        {
+                            Console.WriteLine($"\nВраг:\n Здоровье:{hp_enemy}\n Урон:{damage_enemy}\n Броня:{armor_enemy}");
+                            Console.WriteLine($"\n\nВы:\n Здоровье:{hp}\n Урон:{damage}\n Броня:{armor}");
+                            Console.WriteLine("\n\nДействия:\n 1-ударить \n 2-меню заклинаний");
+                            int select_fight = Convert.ToInt32(Console.ReadLine());
+                            switch (select_fight)
+                            {
+                                case 1:
+                                    hp_enemy -= Convert.ToInt32(damage - (1.0 - armor / 100.0));
+                                    damage_stat += Convert.ToInt32(damage - (1.0 - armor / 100.0));
+                                    hp -= Convert.ToInt32(damage_enemy - (1.0 - armor / 100.0));
+                                    hp_stat += Convert.ToInt32(damage_enemy - (1.0 - armor / 100.0));
+                                    Console.Clear();
+                                    if (hp <= 0.99)
+                                    {
+                                        enemy_fight = false;
+                                        Console.WriteLine("Вы проиграли и потеряли половину денег");
+                                        money /= 2;
+                                        break;
+                                    }
+                                    else if (hp_enemy <= 0.99)
+                                    {
+                                        int money_vrem =  rnd.Next(1, 10);
+                                        money+=money_vrem;
+                                        money_stat += money_vrem;
+                                        enemy_fight = false;
+                                        Console.WriteLine($"Вы выиграли и получили {money_vrem} монет");
+                                        break;
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case 2:
+                        bool select_magaz = true;
+                        while (select_magaz)
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"Добро пожаловать в магазин\nУ вас {money} монет\n\n 1-Купить 5 здоровья(10 монет)\n" +
+                                " 2-Купить 2 Урона(10 монет)\n 3-Купить 1 броню(10 монет)");
+                            Console.WriteLine($"\nЗаклинания \n 4-{magic_cast[0]}(50 монет)\n 5-{magic_cast[1]}(100 монет)\n" +
+                                $" 6-{magic_cast[2]}(50 монет)\n 7-{magic_cast[3]}(150 монет)\n\n10-Для выхода из Магазина");
+                            int select_shop = Convert.ToInt32(Console.ReadLine());
+                            switch (select_shop)
+                            {
+                                case 4:
+                                    if (money >= 50 && magic_hero[0] != "Фаерболл")
+                                    {
+                                        magic_hero[0] = "Фаерболл";
+                                        money -= 50;
+                                        Console.WriteLine("Вы приобрели заклинание");
+                                    }
+                                    else if (magic_hero[0] == "Фаерболл")
+                                    {
+                                        Console.WriteLine("У вас уже есть заклинание");
+                                        
+                                    }
+                                    else if (money < 50)
+                                    {
+                                        Console.WriteLine($"Вам не хватает {50 - money} монет");
+                                    }
+                                    break;
+
+                                case 1:
+                                    if (money >= 10)
+                                    {
+                                        money-= 10;
+                                        hp += 5;
+                                        Console.WriteLine("Вы успешно приобрели здоровье");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Вам не хватает {10-money} монет");
+                                    }
+                                    break;
+                                case 2:
+                                    if (money >= 10)
+                                    {
+                                        money -= 10;
+                                        damage += 2;
+                                        Console.WriteLine("Вы успешно приобрели урон");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Вам не хватает {10 - money} монет");
+                                    }
+                                    break;
+                                case 3:
+                                    if (money >= 10)
+                                    {
+                                        money -= 10;
+                                        armor += 3;
+                                        Console.WriteLine("Вы успешно приобрели броню");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Вам не хватает {10 - money} монет");
+                                    }
+                                    break;
+                                case 5:
+                                    if (money >= 100 && magic_hero[1] != "Удар молнии")
+                                    {
+                                        magic_hero[1] = "Удар молнии";
+                                        money -= 100;
+                                        Console.WriteLine("Вы приобрели заклинание");
+                                    }
+                                    else if (magic_hero[1] == "Удар молнии")
+                                    {
+                                        Console.WriteLine("У вас уже есть заклинание");
+
+                                    }
+                                    else if (money < 100)
+                                    {
+                                        Console.WriteLine($"Вам не хватает {100 - money} монет");
+                                    }
+                                    break;
+                                case 6:
+                                    if (money >= 50 && magic_hero[2] != "Щит")
+                                    {
+                                        magic_hero[2] = "Щит";
+                                        money -= 50;
+                                        Console.WriteLine("Вы приобрели заклинание");
+                                    }
+                                    else if (magic_hero[2] == "Щит")
+                                    {
+                                        Console.WriteLine("У вас уже есть заклинание");
+
+                                    }
+                                    else if (money < 50)
+                                    {
+                                        Console.WriteLine($"Вам не хватает {50 - money} монет");
+                                    }
+                                    break;
+                                case 7:
+                                    if (money >= 150 && magic_hero[3] != "Обездвиживание")
+                                    {
+                                        magic_hero[3] = "Обездвиживание";
+                                        money -= 150;
+                                        Console.WriteLine("Вы приобрели заклинание");
+                                    }
+                                    else if (magic_hero[3] == "Обездвиживание")
+                                    {
+                                        Console.WriteLine("У вас уже есть заклинание");
+
+                                    }
+                                    else if (money < 150)
+                                    {
+                                        Console.WriteLine($"Вам не хватает {150 - money} монет");
+                                    }
+                                    break;
+                                case 10:
+                                    select_magaz = false;
+                                    break;
+                            }
+                            Console.WriteLine("Нажмите любую кнопку для отчистки");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        break;
+                    case 3:
+                        Console.Clear();
+                        Console.WriteLine($"Статистика \n Нанесённый урон: {damage_stat} \n Полученный урон: {hp_stat}\n Заработано денег: {money_stat}" +
+                            $"\n Ваш рейтинг {rating} \n\n Нажмите любую кнопку для выхода ");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 4:
+                        Console.WriteLine("Ваши заклинанния:");
+                        for (int i = 0; i < magic_hero.Length; i++)
+                        {
+                            if (!string.IsNullOrEmpty(magic_hero[i]))
+                                Console.WriteLine($"{magic_hero[i]}");
+                        }
+                        Console.ReadKey();
+                        break;
+                        
+                }
+            }
+        }
+    }
+}
+
+
