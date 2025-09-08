@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Schema;
 using NAudio.Wave;
 
+
 namespace ConsoleApp8
 {
     internal class Program
@@ -13,7 +14,7 @@ namespace ConsoleApp8
 
         static void Main(string[] args)
         {
-            //музыка
+            
             var audioFile = new AudioFileReader(@"E:\c#\ConsoleApp8\music.mp3");
             var outputDevice = new WaveOutEvent();
             outputDevice.Init(audioFile);
@@ -26,7 +27,7 @@ namespace ConsoleApp8
             };
 
             // данные пользователя
-            int hp = 100, damage = 2, armor = 10, money = 0, mana = 10;
+            int hp = 100, damage = 2, armor = 10, money = 100, mana = 10;
             int rating = 100;
             string[] magic_hero = new string[4];
             //статистика
@@ -41,6 +42,7 @@ namespace ConsoleApp8
                 Console.WriteLine("\nДобро пожаловать в подземелье ");
                 Console.WriteLine("\n 1-бои \n 2-магазин \n 3-статистика \n 4-ваши заклинания");
                 int select = Convert.ToInt32(Console.ReadLine());
+                int rating_vrem;
 
                 switch (select)
                 {
@@ -49,12 +51,12 @@ namespace ConsoleApp8
                         Console.Clear();
                         Console.WriteLine("Добро пожаловать на поле битвы ");
                         Random rnd = new Random();
-                        int hp_enemy = rnd.Next(1, 4), damage_enemy = rnd.Next(1, 4), armor_enemy = rnd.Next(10, 14);
+                        int hp_enemy = rnd.Next(1, 4) * (rating / 100), damage_enemy  = rnd.Next(1, 4) * (rating / 100), armor_enemy = rnd.Next(10, 14) * (rating / 200);
                         while (enemy_fight)
                         {
                             Console.WriteLine($"\nВраг:\n Здоровье:{hp_enemy}\n Урон:{damage_enemy}\n Броня:{armor_enemy}");
                             Console.WriteLine($"\n\nВы:\n Здоровье:{hp}\n Урон:{damage}\n Броня:{armor}");
-                            Console.WriteLine("\n\nДействия:\n 1-ударить \n 2-меню заклинаний");
+                                Console.WriteLine("\n\nДействия:\n 1-ударить \n 2-меню заклинаний");
                             int select_fight = Convert.ToInt32(Console.ReadLine());
                             switch (select_fight)
                             {
@@ -67,20 +69,46 @@ namespace ConsoleApp8
                                     if (hp <= 0.99)
                                     {
                                         enemy_fight = false;
-                                        Console.WriteLine("Вы проиграли и потеряли половину денег");
                                         money /= 2;
+                                        rating_vrem = rnd.Next(10, 50);
+                                        rating -= rating_vrem;
+                                        Console.WriteLine($"Вы проиграли и потеряли половину денег а так же {rating_vrem}рейтинга");
                                         break;
                                     }
                                     else if (hp_enemy <= 0.99)
                                     {
-                                        int money_vrem =  rnd.Next(1, 10);
+                                        int money_vrem =  (rnd.Next(1, 10)) * (rating / 100);
                                         money+=money_vrem;
                                         money_stat += money_vrem;
                                         enemy_fight = false;
-                                        Console.WriteLine($"Вы выиграли и получили {money_vrem} монет");
+                                        rating_vrem = rnd.Next(30, 70);
+                                        rating += rating_vrem;
+                                        Console.WriteLine($"Вы выиграли и получили {money_vrem} монет и {rating_vrem} рейтинга ");
                                         break;
                                     }
                                     break;
+                                    case 2:
+                                    Console.WriteLine($"Выбирите заклинание для атаки:");
+                                    for (int q = 0; q < magic_hero.Length; q++)
+                                    {
+                                        if (!string.IsNullOrEmpty(magic_hero[q])) ;
+                                        Console.WriteLine($"{magic_hero[q]}");
+                                    }
+
+                                    break;
+                                    switch (magic_hero[1])
+                                    {
+                                        case "Фаерболл":
+                                            break;
+                                        int spell_cast = 
+                                        case "Удар молнии":
+                                            break;
+                                        case "Щит":
+                                            break;
+                                        case "Обездвиживание":
+                                            break;
+                                    }
+                                        
                             }
                         }
                         break;
@@ -214,7 +242,7 @@ namespace ConsoleApp8
                     case 3:
                         Console.Clear();
                         Console.WriteLine($"Статистика \n Нанесённый урон: {damage_stat} \n Полученный урон: {hp_stat}\n Заработано денег: {money_stat}" +
-                            $"\n Ваш рейтинг {rating} \n\n Нажмите любую кнопку для выхода ");
+                            $"\n Ваш рейтинг {rating}\n \n Здоровье:{hp}\n Урон:{damage}\n Броня:{armor} \n \n Нажмите любую кнопку для выхода ");
                         Console.ReadKey();
                         Console.Clear();
                         break;
@@ -233,5 +261,3 @@ namespace ConsoleApp8
         }
     }
 }
-
-
