@@ -1,38 +1,94 @@
 using System;
 using System.Text;
+using System.Linq;
 
 
 class Program
 {
     static void Main()
     {
-        Console.WriteLine("Введите номер программы");
-        double select_program=Convert.ToDouble(Console.ReadLine());
+        while (true)
+        {
+        Console.WriteLine("Введите номер программы (не используйте , )");
+        string select_program=Console.ReadLine();
         switch (select_program)
         {
-            case 1.2:
+            default:
+                Console.WriteLine("Вы ввели не верный номер");
+                break;
+            case "1.2":
                 Console.WriteLine($"{46+1}  {51+1}  {149+1}");
                 break;
-            case 1.3:
+            case "1.3":
                 Console.WriteLine($"50\n10");
                 break;
-            case 1.1:
+            case "1.1":
                 Console.WriteLine("31, 18, 79");
                 break;
-            case 1.4:
-                Console.WriteLine("");
+            case "1.4":
+                Console.WriteLine($"50\n10\n21");
                 break;
-            case 1.5:
-                Console.WriteLine("");
+            case "1.5":
+                Console.WriteLine("1\n2");
                 break;
-            case 1.6:
-                Console.WriteLine("");
+            case "1.6":
+                Console.WriteLine($"{Math.PI:F3}");
                 break;
-            case 7:
+            case "1.7":
+                Console.WriteLine($"{Math.E:F1}");
                 break;
-            case 8:
+            case "1.8":
+                Console.WriteLine("Введите число:");
+                int inp_1_8=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine($"Вы ввели число: {inp_1_8}");
                 break;
-            
+            case "1.9":
+                Console.WriteLine("Введите число:");
+                int inp_1_9=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine($"{inp_1_9}– вот какое число Вы ввели");
+                break;
+            case "1.10":
+                Console.WriteLine("Введите ваше имя");
+                string inp_1_1_0 = Console.ReadLine();
+                Console.WriteLine(string.Concat(Enumerable.Repeat($"{inp_1_1_0} ", 10)));
+                break;
+            case "1.11":
+                Console.WriteLine("Введите название футбольной комманды");
+                string inp_1_1_1 = Console.ReadLine();
+                Console.WriteLine(string.Concat(Enumerable.Repeat($"{inp_1_1_1}-это чемпион! ", 10)));
+                break;
+            case "1.12":
+                Console.WriteLine("Введите ваше имя");
+                string inp_1_1_2 = Console.ReadLine();
+                Console.WriteLine($"Привет, {inp_1_1_2}! ");
+                break;
+            case "1.13":
+                Console.WriteLine("Введите любое целове число");
+                int inp_1_13=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine($"Следующее за числом {inp_1_13} число – {inp_1_13+1} \n Для числа {inp_1_13} предыдущее число – {inp_1_13-1}.");
+            break;
+            case "1.14":
+                Console.WriteLine("Введите певрое целое число");
+                int  inp_1_14n1=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите второе целое число");
+                int  inp_1_14n2=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите третье целое число");
+                int  inp_1_14n3=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine($"{inp_1_14n1}  {inp_1_14n2}  {inp_1_14n3}");
+                break;
+            case "1.15":
+                Console.WriteLine("Введите певрое целое число");
+                int  inp_1_15n1=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите второе целое число");
+                int  inp_1_15n2=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите третье целое число");
+                int  inp_1_15n3=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите четвёртое целое число");
+                int  inp_1_15n4=Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine($"{inp_1_15n1} {inp_1_15n2} {inp_1_15n3} {inp_1_15n4}");
+                break;
         }
     }
+}
+    
 }
