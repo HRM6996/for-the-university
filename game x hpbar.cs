@@ -19,9 +19,10 @@ class game
         int mana = 20, maxmana = 20;
         bool while_1 = true;
         int armor = 10, aromor_enemy = 10;
-        string[] skills = { "faerball", "poithon", "thunderball" };
+        int[] skills = { 0, 0, 0, };
         string[] effect = new string[3];
         string[] effect_enemy = new string[3];
+        int []move_magic = new int[3];
         while (while_1)
         {
             Console.SetCursorPosition(0, 0);
@@ -76,16 +77,19 @@ class game
                     magicInfo = Console.ReadKey();
                     switch (magicInfo.Key)
                     {
+                        
                         case ConsoleKey.F:
-                            if (mana >= 5)
-                            {
-                                mana -= 5;
-
-                            }
+                            selectmagic(ref mana,5, ref skills[0]);
+                            effectBar("faerball", "hero", move_magic);
                             break;
                         case ConsoleKey.P:
+                            selectmagic(ref mana,5, ref skills[1]);
+                            effectBar("poithon", "hero", move_magic);
                             break;
                         case ConsoleKey.T:
+                            selectmagic(ref mana,10, ref skills[2]);
+                            effectBar("thunderball", "hero", move_magic);
+
                             break;
                     }
 
@@ -143,18 +147,81 @@ class game
         }
         Console.SetCursorPosition(left, top);
     }
-    static void effectBar(string magic, int second, string target)
+    static void effectBar(string magic, string target, int[]move)
     {
+        (int left, int top) = Console.GetCursorPosition();
         if (target == "hero")
         {
-            Console.SetCursorPosition(0, 20);
-            Console.BackgroundColor = ConsoleColor.Blue;
+            switch (magic)
+            {
+                case "faerball":
+                    Console.SetCursorPosition(20, 2);
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.Write($"{move[0]}");
+                    Console.ResetColor();
+
+
+
+                    break;
+                case "poithon":
+                    Console.SetCursorPosition(21,2);
+                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    Console.Write($"{move[1]}");
+                    Console.BackgroundColor = ConsoleColor.White;
+
+                    break;
+                case "thunderball":
+                    Console.SetCursorPosition(22, 2);
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.Write($"{move[2]}");
+                    Console.BackgroundColor = ConsoleColor.White;
+
+                    break;
+            }
+
         }
         else if (target == "enemy")
         {
+            switch (magic)
+            {
+                case "faerball":
+                    Console.SetCursorPosition(20,3);
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.Write($"{move}");
+                    Console.BackgroundColor = ConsoleColor.White;
+                    break;
+                case "poithon":
+                    Console.SetCursorPosition(21, 3);
+                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    Console.Write($"{move}");
+                    Console.BackgroundColor = ConsoleColor.White;
 
+                    break;
+                case "thunderball":
+                    Console.SetCursorPosition(22, 3);
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.Write($"{move}");
+                    Console.BackgroundColor = ConsoleColor.White;
+
+                    break;
+            }
+            Console.SetCursorPosition(left, top);
         }
 
-        }
     }
+    static void selectmagic(ref int mana, int manacost, ref int skills)
+    {
+        if (mana >= 5)
+        {
+            mana -= 5;
+            skills = 5;
+
+        }
+        else
+        {
+            Console.WriteLine("Вам не хватает маны");
+        }
+        return;
+    }
+}
 
