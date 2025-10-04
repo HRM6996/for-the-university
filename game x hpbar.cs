@@ -14,8 +14,8 @@ class game
         ConsoleKeyInfo magicInfo;
         ConsoleKeyInfo shopInfo;
         Console.CursorVisible = false;
-        int hp = 20, maxhp = 20, hp_enemy = 25, maxhp_enemy = 25;
-        int damage = 2, damage_enemy = 2;
+        int hp = 15, maxhp = 15, hp_enemy = 25, maxhp_enemy = 25;
+        int damage = 1, damage_enemy = 2;
         int hp_poithion_heal = 5, damage_poithion = 1, mana_poithion = 4;
         int mana = 20, maxmana = 20;
         bool while_1 = true;
@@ -26,22 +26,22 @@ class game
         int stan_enemy = 0;
         while (while_1)
         {
-                magicDamage(ref move_magic, ref hp_enemy, ref stan_enemy);
-                Console.SetCursorPosition(36, 4);
-                Console.BackgroundColor = ConsoleColor.DarkRed;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write($" {move_magic[0]} ");
-                Console.ResetColor();
-                Console.SetCursorPosition(39, 4);
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                Console.Write($" {move_magic[1]} ");
-                Console.ResetColor();
-                Console.SetCursorPosition(42, 4);
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                Console.Write($" {move_magic[2]} ");
-                Console.ResetColor();
+            magicDamage(ref move_magic, ref hp_enemy, ref stan_enemy);
+            Console.SetCursorPosition(36, 4);
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write($" {move_magic[0]} ");
+            Console.ResetColor();
+            Console.SetCursorPosition(39, 4);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.Write($" {move_magic[1]} ");
+            Console.ResetColor();
+            Console.SetCursorPosition(42, 4);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.Write($" {move_magic[2]} ");
+            Console.ResetColor();
             if (hp_enemy <= 0)
             {
                 while_1 = false;
@@ -110,7 +110,7 @@ class game
                     {
                         hp += damage_enemy;
                     }
-                   
+
                     break;
                 case ConsoleKey.M:
                     clearConsole(10, 12);
@@ -127,22 +127,32 @@ class game
                         case ConsoleKey.F:
                             selectmagic(ref mana, 5, ref skills[0], ref hp_enemy, 5);
                             clearConsole(9, 11);
-                            effectBar("faerball", "hero",ref  move_magic);
+                            effectBar("faerball", "hero", ref move_magic);
                             hp -= damage_enemy;
+                            clearConsole(10, 12);
                             break;
                         case ConsoleKey.P:
                             selectmagic(ref mana, 5, ref skills[1], ref hp_enemy, 1);
                             clearConsole(9, 11);
-                            effectBar("poithon", "hero",ref  move_magic);
+                            effectBar("poithon", "hero", ref move_magic);
+                            clearConsole(10, 12);
+
+                            hp -= damage_enemy;
+
                             break;
                         case ConsoleKey.T:
                             selectmagic(ref mana, 10, ref skills[2], ref hp_enemy, 10);
                             clearConsole(9, 11);
                             effectBar("thunderball", "hero", ref move_magic);
+                            clearConsole(10, 12);
+
+                            hp -= damage_enemy;
+                            break;
+                        default:
+                            clearConsole(10, 12);
                             break;
                     }
-                    hp -= damage_enemy;
-                    
+
                     break;
             }
         }
@@ -184,7 +194,7 @@ class game
         }
         Console.SetCursorPosition(left, top);
     }
-    static void effectBar(string magic, string target,ref  int[] move_magic)
+    static void effectBar(string magic, string target, ref int[] move_magic)
     {
         (int left, int top) = Console.GetCursorPosition();
         if (target == "hero")
@@ -195,7 +205,7 @@ class game
                     Console.SetCursorPosition(36, 4);
                     Console.BackgroundColor = ConsoleColor.DarkRed;
                     Console.ForegroundColor = ConsoleColor.Black;
-                    move_magic[0]+= 4;
+                    move_magic[0] += 4;
                     Console.Write($" {move_magic[0]} ");
                     Console.ResetColor();
                     break;
@@ -261,11 +271,11 @@ class game
         }
         return;
     }
-    static void magicDamage (ref int[] move_magic, ref int hp_enemy, ref int stan_enemy)
+    static void magicDamage(ref int[] move_magic, ref int hp_enemy, ref int stan_enemy)
     {
         for (int i = 0; i < 3; i++)
         {
-            if (move_magic[i] > 0 )
+            if (move_magic[i] > 0)
             {
                 switch (i)
                 {
@@ -274,7 +284,7 @@ class game
                         move_magic[i]--;
                         break;
                     case 1:
-                        hp_enemy -= 5;
+                        hp_enemy -= 3;
                         move_magic[i]--;
 
                         break;
@@ -288,7 +298,7 @@ class game
                 }
             }
         }
-            if (move_magic[2] == 0)
+        if (move_magic[2] == 0)
         {
             stan_enemy = 0;
         }
