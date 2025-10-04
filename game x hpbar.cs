@@ -15,7 +15,7 @@ class game
         Console.CursorVisible = false;
         int hp = 20, maxhp = 20, hp_enemy = 20, maxhp_enemy = 20;
         int damage = 2, damae_enemy = 2;
-        int hp_poithion_heal = 5, damage_poithion = 1;
+        int hp_poithion_heal = 5, damage_poithion = 1,mana_poithion = 4;
         int mana = 20, maxmana = 20;
         bool while_1 = true;
         int armor = 10, aromor_enemy = 10;
@@ -29,7 +29,6 @@ class game
             Console.WriteLine("Вы:");
             HPbar(hp, maxhp, ConsoleColor.Green, 1);
             Console.Write($" хп:{hp}/{maxhp}");
-
             HPbar(mana, maxmana, ConsoleColor.Blue, 2);
             Console.Write($" мана:{mana}/{maxmana}");
 
@@ -42,10 +41,21 @@ class game
             {
                 case ConsoleKey.S:
                     clearConsole(10, 12);
-                    Console.WriteLine("\nH-Купить зелье здоровья\nD-Купить зелье силы");
+                    Console.WriteLine("\nH-Купить зелье здоровья\nD-Купить зелье силы\nM-Купить зелье маны");
                     shopInfo = Console.ReadKey();
                     switch (shopInfo.Key)
                     {
+                        case ConsoleKey.M:
+                            mana += mana_poithion;
+                            if (mana >= maxmana)
+                            {
+                                mana = maxmana;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         case ConsoleKey.H:
                             hp += hp_poithion_heal;
                             if (hp >= maxhp)
@@ -79,17 +89,20 @@ class game
                     {
                         
                         case ConsoleKey.F:
-                            selectmagic(ref mana,5, ref skills[0]);
+                            selectmagic(ref mana,5, ref skills[0], ref hp_enemy, 5);
+                            clearConsole(9,11);
                             effectBar("faerball", "hero", move_magic);
+                            hp -= damae_enemy;
                             break;
                         case ConsoleKey.P:
-                            selectmagic(ref mana,5, ref skills[1]);
+                            selectmagic(ref mana,5, ref skills[1], ref hp_enemy, 1);
+                            clearConsole(9,11);
                             effectBar("poithon", "hero", move_magic);
                             break;
                         case ConsoleKey.T:
-                            selectmagic(ref mana,10, ref skills[2]);
+                            selectmagic(ref mana,10, ref skills[2], ref hp_enemy, 10);
+                            clearConsole(9,11);
                             effectBar("thunderball", "hero", move_magic);
-
                             break;
                     }
 
@@ -155,27 +168,25 @@ class game
             switch (magic)
             {
                 case "faerball":
-                    Console.SetCursorPosition(20, 2);
+                    Console.SetCursorPosition(36,4);
                     Console.BackgroundColor = ConsoleColor.DarkRed;
-                    Console.Write($"{move[0]}");
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write($" {move[0]} ");
                     Console.ResetColor();
-
-
-
                     break;
                 case "poithon":
-                    Console.SetCursorPosition(21,2);
+                    Console.SetCursorPosition(39,4);
+                    Console.ForegroundColor = ConsoleColor.Black;
                     Console.BackgroundColor = ConsoleColor.DarkGreen;
-                    Console.Write($"{move[1]}");
-                    Console.BackgroundColor = ConsoleColor.White;
-
+                    Console.Write($" {move[1]} ");
+                    Console.ResetColor();
                     break;
                 case "thunderball":
-                    Console.SetCursorPosition(22, 2);
+                    Console.SetCursorPosition(42,4);
+                    Console.ForegroundColor = ConsoleColor.Black;
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
-                    Console.Write($"{move[2]}");
-                    Console.BackgroundColor = ConsoleColor.White;
-
+                    Console.Write($" {move[2]} ");
+                    Console.ResetColor();
                     break;
             }
 
@@ -185,36 +196,36 @@ class game
             switch (magic)
             {
                 case "faerball":
-                    Console.SetCursorPosition(20,3);
+                    Console.SetCursorPosition(30,10);
                     Console.BackgroundColor = ConsoleColor.DarkRed;
-                    Console.Write($"{move}");
-                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.Write($" {move} ");
+                    Console.ResetColor();
                     break;
                 case "poithon":
                     Console.SetCursorPosition(21, 3);
                     Console.BackgroundColor = ConsoleColor.DarkGreen;
                     Console.Write($"{move}");
-                    Console.BackgroundColor = ConsoleColor.White;
-
+                    Console.ResetColor();
                     break;
                 case "thunderball":
                     Console.SetCursorPosition(22, 3);
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.Write($"{move}");
-                    Console.BackgroundColor = ConsoleColor.White;
-
+                    Console.ResetColor();
                     break;
             }
             Console.SetCursorPosition(left, top);
+            
         }
 
     }
-    static void selectmagic(ref int mana, int manacost, ref int skills)
+    static void selectmagic(ref int mana, int manacost, ref int skills, ref int hp_enemy , int damage)
     {
         if (mana >= 5)
         {
             mana -= 5;
             skills = 5;
+            hp_enemy -= damage;
 
         }
         else
@@ -224,4 +235,3 @@ class game
         return;
     }
 }
-
