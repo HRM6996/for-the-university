@@ -1,0 +1,49 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            double d = 0, l = 0, q = 10;
+            int n = 0;
+            double result = 0;
+            Console.WriteLine("Введите основание кодирующего алфавита (Для довичного кода это 2)");
+            d = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите колличество кодируемых символов");
+            n = Convert.ToInt32(Console.ReadLine());
+            int[] codovoe_slovo =  new int[n];
+            Console.WriteLine("Задайте длинны кодовых слов, по цифре");
+            
+            for (int i = 0; i < n; i++)
+            {
+                codovoe_slovo[i] = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Дальше");
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                result += Math.Pow(d, -codovoe_slovo[i]);
+            }
+
+            if (result <= 1)
+            {
+                Console.WriteLine($"Код хороший, сумма составляет {result}");
+                
+
+            }
+            else
+            {
+                Console.WriteLine($"Код плохой, сумма составляет {result}");
+            }
+            
+                        
+        }
+    }
